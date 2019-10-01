@@ -1,0 +1,54 @@
+{
+	"name": "@flui/sba-cloud-typescript-monorepo",
+	"private": true,
+	"version": "1.0.0",
+	"repository": "git@ssh.dev.azure.com:v3/flui/flui-webapp-monorepo/flui-webapp-monorepo",
+	"author": "Ken Lee <ken@flui.ai>",
+	"license": "MIT",
+	"workspaces": [
+		"packages/*"
+	],
+	"scripts": {
+		"lerna": "lerna",
+		"bootstrap": "lerna bootstrap",
+		"packages:gen:lock": "lerna exec -- \"yarn generate-lock-entry > yarn.lock\"",
+        "packages:sort-package": "lerna exec sort-package-json",
+		"packages:build": "lerna run build --parallel --stream",
+		"packages:build:old": "lerna run build --parallel --stream && lerna run build --parallel --since master",
+		"packages:build:next": "lerna run next:build --parallel --since master",
+		"packages:build:watch": "lerna run --parallel watch",
+		"packages:version:patch": "lerna version patch --conventional-commits --yes",
+		"packages:version:minor": "lerna version minor --conventional-commits --yes",
+		"packages:version:canary": "lerna version prerelease --conventional-commits  --yes",
+		"packages:version:prerelease": "lerna version prerelease --conventional-commits --yes",
+		"packages:publish:release": "lerna publish from-git --yes",
+		"packages:publish:canary": "lerna publish --yes --canary",
+		"packages:changed": "lerna changed",
+		"docker:publish": "lerna run --parallel docker:publish",
+		"test:ci": "lerna exec --since remotes/origin/master -- yarn test:ci",
+		"clean": "lerna clean --yes",
+		"resync": "node yarn_remove_hash.js && yarn && yarn bootstrap",
+		"clean:lib": "rimraf buydata-packages/**/lib",
+		"clean:dist": "rimraf buydata-packages/**/dist",
+		"clean:next": "rimraf buydata-packages/**/.next",
+		"clean:all": "yarn clean && yarn clean:lib && yarn clean:dist && yarn clean:next && rimraf node_modules",
+		"publish": "lerna publish",
+		"prettier:js": "prettier --config .prettierrc --write **/**/*.{js,jsx,json}",
+		"prettier:ts": "prettier --config .prettierrc --write **/**/*.{ts,tsx}"
+	},
+	"devDependencies": {
+		"@types/node": "^12.7.3",
+		"lerna": "^3.16.4",
+		"prettier": "^1.18.2",
+		"rimraf": "^2.6.3",
+		"shelljs": "^0.8.3",
+		"yargs": "^13.3.0",
+      	"sort-package-json": "^1.22.1",
+		"typescript": "^3.6.3"
+	},
+	"resolutions": {
+		"canvas": "2.6.0",
+		"graphql": "14.5.4",
+		"hoek": "6.1.2"
+	}
+}
